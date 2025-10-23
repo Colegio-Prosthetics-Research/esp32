@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Document</title>
+  <script defer src="./main.js"></script>
+  <link rel="stylesheet" href="./main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1 class="title">Remote Prosthetic Inputs</h1>
+  
+  <main class="main">
+    <h2 class="subtitle">Finger Inputs</h2>
+
+    <div class="fingerInputs">
+      <div class="fingerInput">
+        <div class="fingerName">Thumb</div>
+        <select class="fingerSelect" id="thumb"></select>
+      </div>
+      
+      <div class="fingerInput">
+        <div class="fingerName">Index</div>
+        <select class="fingerSelect" id="index"></select>
+      </div>
+
+      <div class="fingerInput">
+        <div class="fingerName">Middle</div>
+        <select class="fingerSelect" id="middle"></select>
+      </div>
+
+      <div class="fingerInput">
+        <div class="fingerName">Ring</div>
+        <select class="fingerSelect" id="ring"></select>
+      </div>
+
+      <div class="fingerInput">
+        <div class="fingerName">Pinky</div>
+        <select class="fingerSelect" id="pinky"></select>
+      </div>
+    </div>
+
+    <h2 class="subtitle">Preset Inputs</h2>
+
+    <div class="presetInputs">
+      <div class="presetButton" value="open">🖐️</div>
+      <div class="presetButton" value="point">👈</div>
+      <div class="presetButton" value="thumb">👍</div>
+      <div class="presetButton" value="one">☝️</div>
+      <div class="presetButton" value="fist">✊</div>
+    </div>
+
+    <div class="msg"></div>
+  </main>
+  
+</body>
+</html>
