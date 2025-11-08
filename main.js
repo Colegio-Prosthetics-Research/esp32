@@ -1,9 +1,24 @@
+import { versions } from "./lib/HandVersions.js";
+
 const ip = '192.168.4.1';
 const port = '80';
 
+// setting up hand version selector
+const handVersionSelect = document.getElementById("versionSelect");
+
+for (let version in versions) {
+  handVersionSelect.innerHTML += `<option value="${version}">${version}</option>`;
+}
+
+var hand = Object.values(versions)[0];
+
+handVersionSelect.addEventListener("change", (e) => {
+  hand = versions[e.target.value];
+});
+
 // setting up input options
 var options = "";
-for (i = 0; i <= 180; i++) options += `<option value="${i}">${i}º</option>`;
+for (let i = 100; i >= 0; i--) options += `<option value="${i}">${i}%</option>`;
 
 const fingerSelects = document.querySelectorAll(".fingerSelect");
 
@@ -16,32 +31,34 @@ document.querySelectorAll(".presetButton").forEach((e) => e.addEventListener("cl
 
 function usePreset(e) {
   const val = e.target.getAttribute("value");
+  var fingerOpenFractions;
 
-  if (val == "open") {
-    fingerAngles = [0,0,0,0,0];
+  if (val == "rock") {
+    fingerOpenFractions = [0, 1, 0, 0, 1];
   }
 
-  if (val == "point") {
-    fingerAngles = [0,0,180,180,180];
+  if (val == "open") {
+    fingerOpenFractions = [1, 1, 1, 1, 1];
   }
 
   if (val == "thumb") {
-    fingerAngles = [0, 180, 180, 180, 180];;
+    fingerOpenFractions = [1, 0, 0, 0, 0];
   }
 
   if (val == "one") {
-    fingerAngles = [180, 0, 180, 180, 180];
+    fingerOpenFractions = [0, 1, 0, 0, 0];
   }
 
   if (val == "fist") {
-    fingerAngles = [180, 180, 180, 180, 180];
+    fingerOpenFractions = [0, 0, 0, 0, 0];
   }
 
-  for (i = 0; i < 5; i++) {
-    fingerSelects[i].value = fingerAngles[i];
+  for (let i = 0; i < 5; i++) {
+    fingerSelects[i].value = fingerOpenFractions[i] * 100;
+    hand.fingers[i].openTo(fingerOpenFractions[i]);
   }
 
-  sendHandData(fingerAngles);
+  sendHandData(hand.angles);
 }
 
 const msgElement = document.querySelector(".msg");
@@ -54,9 +71,7 @@ async function sendFingerData(e) {
   const val = e.target.value;
 
   try {
-    const response = await fetch(`http://${ip}:${port}/${finger}/angle/set?angle=${val}`, {
-      method: 'POST'
-    });
+    const response = await fetch(`http://${ip}:${port}/fingers/angle/set?${finger}=${val}`);
     const txt = await response.text();
     msgElement.innerText = txt;
   } catch (error) {
@@ -69,13 +84,16 @@ async function sendFingerData(e) {
 
 // sending request for all fingers (used for presets)
 async function sendHandData(fingerAngles) {
-  const data = fingerAngles.join(',')
+  const angleParams = Array(5);
+
+  for (let i = 0; i < 5; i++) {
+    angleParams[i] = [`${fingerSelects[i].id}=${fingerAngles[i]}`];
+  }
+
   console.log(fingerAngles);
 
   try {
-    const response = await fetch(`http://${ip}:${port}/hand/angles/set?=angle${data}`, {
-      method: 'POST'
-    });
+    const response = await fetch(`http://${ip}:${port}/fingers/angle/set?${angleParams.join('&')}`);
     const txt = await response.text();
     msgElement.innerText = txt;
   } catch (error) {
