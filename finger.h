@@ -9,9 +9,10 @@ using std::string;
 class Finger {
         public:
         // Constructor
-        Finger(double maxAngle, int servoPin);
+        Finger(double maxAngle,double minAngle, int servoPin);
         // Variables
         double maxAngle;
+        double minAngle;
         Servo servo;
 
         // Methods
