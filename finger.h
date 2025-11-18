@@ -7,6 +7,9 @@
 using std::string;
 
 class Finger {
+        private:
+        void logEvent(const String& level, const String& message, const String& component = "Finger", const String& details = "");
+
         public:
         // Constructor
         Finger(double maxAngle,double minAngle, int servoPin);
